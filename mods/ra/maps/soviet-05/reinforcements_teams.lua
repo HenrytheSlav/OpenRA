@@ -20,6 +20,11 @@ GGInfAttack = { }
 TankAttackGG = { }
 islanders1 = { "e1", "e1", "e3", "e1", "e3" }
 
+ShipWaypoints = { waypoint77, waypoint14, waypoint51 }
+InfantryWaypoints = { waypoint2, waypoint48, waypoint49, waypoint1 }
+InfantryGGWaypoints = { waypoint29, waypoint30, waypoint40 }
+TanksGGWaypoints = { waypoint29, waypoint30, waypoint40 }
+
 Para = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
 	local units = powerproxy.SendParatroopers(waypointPara.CenterPosition, false, 32)

@@ -10,7 +10,7 @@ end
 
 CheckForCYard = function()
 	ConYard = Map.ActorsInBox(waypoint78.CenterPosition, waypoint44.CenterPosition, function(actor)
-		return actor.Type == "fact"
+		return actor.Type == "fact" and actor.Owner == GoodGuy
 	end)
 
 	return #ConYard >= 1
