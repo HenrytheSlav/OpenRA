@@ -3,9 +3,9 @@ IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt
 IdlingUnits = function()
 	local lazyUnits = Map.ActorsInBox(NWIdlePoint.CenterPosition, Map.BottomRight, function(actor)
 		return actor.HasProperty("Hunt") and (actor.Owner == GoodGuy or actor.Owner == Greece) end)
- 
+
 	Utils.Do(lazyUnits, function(unit)
-		Trigger.OnDamaged(unit, function() 
+		Trigger.OnDamaged(unit, function()
 			Trigger.ClearAll(unit)
 			Trigger.AfterDelay(0, function() IdleHunt(unit) end)
 		end)
@@ -64,7 +64,7 @@ BuildBuilding = function(building)
 				building.StartBuildingRepairs()
 			end
 		end)
-		
+
 		Trigger.AfterDelay(DateTime.Seconds(1), BuildBase)
 	end)
 end

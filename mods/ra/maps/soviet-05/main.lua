@@ -140,34 +140,11 @@ end
 Tick = function()
 	if Greece.HasNoRequiredUnits() and GoodGuy.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(KillAll)
+		player.MarkCompletedObjective(HoldObjective)
 	end
 
 	if player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(CaptureObjective)
-		player.MarkFailedObjective(KillAll)
 		GoodGuy.MarkCompletedObjective(BeatUSSR)
-	end
-
-	if Radar.IsDead and Radstop then
-		player.MarkFailedObjective(HoldObjective)
-	else
-		player.MarkFailedObjective(CaptureObjective)
-	end
-
-	if Radar.Owner == player and not Radstop then
-		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
-		if not ExpansionCheck then
-			Expand()
-			ExpansionCheck = true
-		end
-
-		player.MarkCompletedObjective(CaptureObjective)
-
-		Reinforcements.Reinforce(Greece, ArmorReinfGreece, AlliedCrossroadsToRadarPath , 0, function(soldier)
-			soldier.Hunt()
-		end)
-
-		Radstop = true
 	end
 
 	if not baseEstablished and CheckForBase() then
@@ -188,12 +165,12 @@ Tick = function()
 
 	if not RCheck then
 		RCheck = true
-		if Map.Difficulty == "Easy" and ReinfCheck then  
-			Trigger.AfterDelay(DateTime.Minutes(6), ReinfArmor) 
-		elseif Map.Difficulty == "Medium" then  
-			Trigger.AfterDelay(DateTime.Minutes(4), ReinfArmor) 
-		else  
-			Trigger.AfterDelay(DateTime.Minutes(3), ReinfArmor) 
+		if Map.Difficulty == "Easy" and ReinfCheck then
+			Trigger.AfterDelay(DateTime.Minutes(6), ReinfArmor)
+		elseif Map.Difficulty == "Medium" then
+			Trigger.AfterDelay(DateTime.Minutes(4), ReinfArmor)
+		else
+			Trigger.AfterDelay(DateTime.Minutes(3), ReinfArmor)
 		end
 	end
 end
@@ -222,6 +199,37 @@ WorldLoaded = function()
 
 	Trigger.OnDamaged(mcvGG, Expand)
 	Trigger.OnDamaged(mcvtransport, Expand)
+
+	Trigger.OnKilled(Radar, function()
+		player.MarkFailedObjective(CaptureObjective)
+	end)
+
+	Trigger.OnCapture(Radar, function(self, captor)
+		if captor.Owner ~= player then
+			return
+		end
+
+		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
+		player.MarkCompletedObjective(CaptureObjective)
+
+		if not ExpansionCheck then
+			Expand()
+			ExpansionCheck = true
+		end
+
+		Reinforcements.Reinforce(Greece, ArmorReinfGreece, AlliedCrossroadsToRadarPath , 0, function(soldier)
+			soldier.Hunt()
+		end)
+
+		Trigger.AfterDelay(1, function()
+			local newRadar = Actor.Create("dome", true, { Owner = player, Location = Radar.Location })
+			newRadar.Health = Radar.Health
+			Radar.Destroy()
+			Trigger.OnKilled(newRadar, function()
+				player.MarkFailedObjective(HoldObjective)
+			end)
+		end)
+	end)
 
 	Trigger.OnEnteredProximityTrigger(USSRExpansionPoint.CenterPosition, WRange.New(4 * 1024), function(unit, id)
 		if unit.Owner == player and Radar.Owner == player then

@@ -241,7 +241,7 @@ Actors:
 		Location: 69,49
 		Owner: Greece
 		Facing: 32
-	Radar: dome
+	Radar: dome.ignore
 		Location: 70,45
 		Owner: Greece
 	Actor57: fact
@@ -698,6 +698,12 @@ Rules:
 	HIJACKER:
 		Buildable:
 			Prerequisites: ~disabled
+	SPY:
+		Buildable:
+			Prerequisites: ~disabled
+	MECH:
+		Buildable:
+			Prerequisites: ~disabled
 	MCV:
 		Buildable:
 			Prerequisites: ~disabled
@@ -710,8 +716,13 @@ Rules:
 	APC:
 		Buildable:
 			Prerequisites: ~disabled
-	DOME:
+	DOME.IGNORE:
+		Inherits: DOME
+		RenderBuilding:
+			Image: DOME
 		AutoTargetIgnore:
+		Buildable:
+			Prerequisites: ~disabled
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E1,E1,E1,E1,E1
