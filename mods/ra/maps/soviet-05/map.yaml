@@ -651,14 +651,9 @@ Rules:
 			ShowOwnerRow: false
 		Demolishable:
 	^Building:
-		Capturable:
-			CaptureThreshold: 0.25
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
-	^TechBuilding:
-		Capturable:
-			Type: ~disabled
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
