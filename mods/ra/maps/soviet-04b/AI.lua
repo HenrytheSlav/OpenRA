@@ -20,7 +20,7 @@ BaseBuildings =
 }
 
 BuildBase = function()
-	if CYard.IsDead then
+	if CYard.IsDead and CYard.Owner ~= Greece then
 		return
 	elseif Harvester.IsDead and Greece.Resources <= 299 then
 		return
