@@ -768,6 +768,9 @@ Rules:
 	APC:
 		Buildable:
 			Prerequisites: ~disabled
+	AGUN:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 

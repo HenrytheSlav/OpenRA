@@ -728,6 +728,9 @@ Rules:
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E1,E1,E1,E1,E1
+	AGUN:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 
