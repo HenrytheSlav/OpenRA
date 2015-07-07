@@ -1,5 +1,5 @@
 Civs = { civ1, civ2, civ3, civ4 }
-Village = { civ1, civ2, civ3, civ4, village1, village2, village3 }
+Village = { civ1, civ3, civ4, village1, village3 }
 Guards = { Guard1, Guard2, Guard3 }
 SovietMCV = { "mcv" }
 InfantryReinfGreece = { "e1", "e1", "e1", "e1", "e1" }
