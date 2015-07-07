@@ -624,7 +624,7 @@ Actors:
 	Actor168: mine
 		Location: 52,88
 		Owner: Neutral
-	Actor168: mine
+	Actor169: mine
 		Location: 91,87
 		Owner: Neutral
 	NRoadPoint: waypoint
