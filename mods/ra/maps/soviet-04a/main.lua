@@ -1,14 +1,3 @@
-CheckForRadar = function()
-	if not Radar.IsDead then
-		return true
-	end
-end
-
-CheckForCY = function()
-	if not CYard.IsDead then
-		return true
-	end
-end
 
 RunInitialActivities = function()
 	Harvester.FindResources()
@@ -41,7 +30,7 @@ RunInitialActivities = function()
 	Trigger.OnKilled(Proc, function(building)
 		BaseBuildings[3][4] = false
 	end)
-	
+
 	Trigger.OnKilled(Weap, function(building)
 		BaseBuildings[4][4] = false
 	end)

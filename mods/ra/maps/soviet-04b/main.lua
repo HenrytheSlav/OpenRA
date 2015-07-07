@@ -1,14 +1,3 @@
-CheckForRadar = function()
-	if not Radar.IsDead then
-		return true
-	end
-end
-
-CheckForCY = function()
-	if not CYard.IsDead then
-		return true
-	end
-end
 
 RunInitialActivities = function()
 	Harvester.FindResources()
@@ -139,7 +128,7 @@ WorldLoaded = function()
 		player.MarkCompletedObjective(KillRadar)
 		Media.PlaySpeechNotification(player, "ObjectiveMet")
 	end)
-	
+
 	Trigger.OnDamaged(Harvester, function()
 		Utils.Do(Guards, function(unit)
 			if not unit.IsDead and not Harvester.IsDead then

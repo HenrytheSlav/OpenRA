@@ -37,9 +37,7 @@ ReinfInf = function()
 end
 
 ReinfArmor = function()
-	if not CheckForRadar() then
-		return
-	else
+	if not Radar.IsDead then
 		RCheck = true
 		Reinforcements.Reinforce(Greece, ArmorReinfGreece, InfReinfPath, 0, function(soldier)
 			soldier.Hunt()
@@ -52,9 +50,8 @@ BringPatrol1 = function()
 	Utils.Do(units, function(patrols)
 		patrols.Patrol(Patrol1Path, true, 250)
 	end)
-	if not CheckForRadar() then
-		return
-	else
+
+	if not Radar.IsDead then
 		Trigger.OnAllKilled(units, function()
 			if Map.Difficulty == "Hard" then
 				Trigger.AfterDelay(DateTime.Minutes(4), BringPatrol1)
@@ -70,9 +67,8 @@ BringPatrol2 = function()
 	Utils.Do(units, function(patrols)
 		patrols.Patrol(Patrol2Path, true, 250)
 	end)
-	if not CheckForRadar() then
-		return
-	else
+
+	if not Radar.IsDead then
 		Trigger.OnAllKilled(units, function()
 			if Map.Difficulty == "Hard" then
 				Trigger.AfterDelay(DateTime.Minutes(4), BringPatrol2)

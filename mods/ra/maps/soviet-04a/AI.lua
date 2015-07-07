@@ -20,7 +20,7 @@ BaseBuildings =
 }
 
 BuildBase = function()
-	if not CheckForCY() then
+	if CYard.IsDead then
 		return
 	elseif Harvester.IsDead and Greece.Resources <= 299 then
 		return
