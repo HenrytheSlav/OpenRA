@@ -1,5 +1,21 @@
-AlliedReinforcementsA = { "e1", "e1", "e1", "e1", "e1" }
-AlliedReinforcementsB = { "e3", "e3", "e3", "e3", "e3" }
+AlliedReinforcementsA = {
+	hard = { "e1", "e1", "e1" },
+	normal = { "e1", "e1", "e1", "e1", "e1" },
+	easy = { "e1", "e1", "e1", "e1", "e1" }
+}
+
+AlliedReinforcementsB = {
+	hard = { "e3", "e3", "e3" },
+	normal = { "e3", "e3", "e3", "e3", "e3" },
+	easy = { "e3", "e3", "e3", "arty" }
+}
+
+AlliedReinforcementsC = {
+	hard = { "1tnk", "1tnk", "e3" },
+	normal = { "2tnk", "2tnk" },
+	easy = { "2tnk", "2tnk", "e3", "e3" }
+}
+
 BadGuys = { BadGuy1, BadGuy2, BadGuy3 }
 
 SovietDogPatrols =
@@ -95,8 +111,8 @@ InitialAlliedReinforcements = function()
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Reinforcements.Reinforce(player, AlliedReinforcementsB, { AlliedEntry2.Location, UnitAStopLocation.Location }, 2)
 	end)
-	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Reinforcements.Reinforce(player, { "mcv" }, { AlliedEntry3.Location, MCVStopLocation.Location })
+	Trigger.AfterDelay(DateTime.Seconds(3), function()
+		Reinforcements.Reinforce(player, AlliedReinforcementsC, { AlliedEntry3.Location, MCVStopLocation.Location })
 	end)
 end
 
@@ -107,6 +123,20 @@ CaptureRadarDome = function()
 
 	Trigger.OnCapture(Radar, function()
 		player.MarkCompletedObjective(CaptureRadarDomeObj)
+		MCVWaterTransport()
+		Trigger.AfterDelay(DateTime.Seconds(5), cam.Destroy)
+		Trigger.AfterDelay(DateTime.Seconds(5), function()
+			Media.DisplayMessage("You can disable the Radar Dome to stop it from draining your power and slowing your production for now. Use the icon of the lightning in the top right corner. Don't forget to power it back up later!","Hint")
+		end)
+	end)
+end
+
+MCVWaterTransport = function()
+	local mcvreinf = Reinforcements.ReinforceWithTransport(player, "lst.in", { "mcv" }, { WaterUnloadEntry1.Location, WaterUnload2.Location }, { WaterUnload2.Location, WaterUnloadEntry1.Location })[2]
+	Utils.Do(mcvreinf, function(units)
+		Trigger.OnAddedToWorld(units, function()
+			units.Move(SovietMiniBaseCam.Location)
+		end)
 	end)
 end
 
@@ -147,6 +177,7 @@ InfiltrateRef = function()
 	end)
 end
 
+spyHelp = false
 Tick = function()
 	if DateTime.GameTime > DateTime.Seconds(10) and player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(InfiltrateTechCenterObj)
@@ -154,6 +185,17 @@ Tick = function()
 
 	if DestroySovietsObj and ussr.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(DestroySovietsObj)
+	end
+
+	if not spyHelp then
+		if #Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == player and self.Type == "spy" end) < 1 then
+			return
+		else
+			spyHelp = true
+			Trigger.AfterDelay(0, function()
+				Media.DisplayMessage("To disguise your spy, select him first, them right-click any enemy infantry (at any range). Undisguised spies are easy prey to the enemy!","Hint")
+			end)
+		end
 	end
 end
 
@@ -205,11 +247,10 @@ WorldLoaded = function()
 		InitialSovietPatrols()
 	end)
 
-	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.New(1024 * 6), function(a, id)
+	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.New(1024 * 10), function(a, id)
 		if a.Owner == player then
 			Trigger.RemoveProximityTrigger(id)
-			local cam = Actor.Create("Camera", true, { Owner = player, Location = SovietMiniBaseCam.Location })
-			Trigger.AfterDelay(DateTime.Seconds(15), cam.Destroy)
+			cam = Actor.Create("Camera", true, { Owner = player, Location = SovietMiniBaseCam.Location })
 		end
 	end)
 
@@ -217,4 +258,12 @@ WorldLoaded = function()
 	InfiltrateTechCenter()
 	InfiltrateRef()
 	Trigger.AfterDelay(0, ActivateAI)
+	Trigger.AfterDelay(0, DiffRecalc)
+end
+
+DiffRecalc = function()
+	local difficulty = Map.LobbyOption("difficulty")
+	AlliedReinforcementsA = AlliedReinforcementsA[difficulty]
+	AlliedReinforcementsB = AlliedReinforcementsB[difficulty]
+	AlliedReinforcementsC = AlliedReinforcementsC[difficulty]
 end

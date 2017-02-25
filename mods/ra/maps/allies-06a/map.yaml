@@ -290,6 +290,11 @@ Actors:
 		Location: 19,64
 		Owner: Greece
 		Facing: 127
+	engi: e6
+		Location: 19,63
+		Owner: Greece
+		Facing: 127
+		SubCell: 3
 	Actor109: e2
 		Location: 13,85
 		Owner: USSR

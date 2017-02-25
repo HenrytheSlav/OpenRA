@@ -96,3 +96,9 @@ SS:
 	AutoTarget:
 		InitialStanceAI: AttackAnything
 
+LST.IN:
+	Inherits: LST
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: LST
