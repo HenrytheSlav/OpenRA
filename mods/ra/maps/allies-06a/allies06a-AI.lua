@@ -13,8 +13,8 @@ WTransUnits =
 WTransDelays =
 {
 	easy = 4,
-	normal = 3,
-	hard = 1
+	normal = 5,
+	hard = 3
 }
 
 BuildDelays =
